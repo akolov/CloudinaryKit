@@ -15,13 +15,13 @@ public struct CloudinaryTransformation {
     bucket: String,
     mediaType: CloudinaryMediaType,
     deliveryType: DeliveryType = .upload,
-    transformationType: TransformationType? = nil
+    kind: Kind? = nil
   ) {
     self.cloudinaryID = cloudinaryID
     self.cloudinaryBucket = bucket
     self.mediaType = mediaType
     self.deliveryType = deliveryType
-    self.transformationType = transformationType
+    self.transformationKind = kind
   }
 
   // MARK: Subtypes
@@ -64,7 +64,7 @@ public struct CloudinaryTransformation {
     public let duration: TimeInterval?
   }
 
-  public enum TransformationType {
+  public enum Kind {
     case dynamic(CloudinaryTransformationOptions)
     case named(NamedTransformation)
   }
@@ -84,7 +84,7 @@ public struct CloudinaryTransformation {
   public let cloudinaryBucket: String
   public let mediaType: CloudinaryMediaType
   public let deliveryType: DeliveryType
-  public let transformationType: TransformationType?
+  public let transformationKind: Kind?
 
 }
 
@@ -105,8 +105,8 @@ extension CloudinaryTransformation {
     components.path = "/\(cloudinaryBucket)/\(resourceType)/upload"
 
     var url = components.url
-    if let transformationType = transformationType {
-      switch transformationType {
+    if let transformationKind = transformationKind {
+      switch transformationKind {
       case let .dynamic(options):
         url = url?.appendingPathComponent(options.serialized())
       case let .named(name):
