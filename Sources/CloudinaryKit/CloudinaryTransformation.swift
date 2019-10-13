@@ -6,7 +6,7 @@
 //  Copyright © 2018 Wineapp Ltd. All rights reserved.
 //
 
-import UIKit.UIScreen
+import Foundation
 
 public struct CloudinaryTransformation {
 

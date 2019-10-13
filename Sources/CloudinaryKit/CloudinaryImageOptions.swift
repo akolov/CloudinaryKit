@@ -6,7 +6,11 @@
 //  Copyright © 2018 Wineapp Ltd. All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit.UIScreen
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public struct CloudinaryImageOptions: CloudinaryTransformationOptions {
 
@@ -18,9 +22,14 @@ public struct CloudinaryImageOptions: CloudinaryTransformationOptions {
   public let quality: CloudinaryTransformation.Quality?
   public let height: Double?
   public let width: Double?
-  public let scale = UIScreen.main.scale
   public let trim: CloudinaryTransformation.VideoTrim?
   public let layers: [CloudinaryLayer]
+
+  #if canImport(UIKit)
+  public let scale = UIScreen.main.scale
+  #elseif canImport(AppKit)
+  public let scale = NSScreen.main?.backingScaleFactor ?? 1.0
+  #endif
 
   public enum ImageFlags: String {
     case progressive = "fl_progressive"

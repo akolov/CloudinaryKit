@@ -6,7 +6,11 @@
 //  Copyright © 2018 Wineapp Ltd. All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit.UIScreen
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public struct CloudinaryVideoOptions: CloudinaryTransformationOptions {
 
@@ -21,7 +25,12 @@ public struct CloudinaryVideoOptions: CloudinaryTransformationOptions {
   public let trim: CloudinaryTransformation.VideoTrim?
   public let height: Double?
   public let width: Double?
+
+  #if canImport(UIKit)
   public let scale = UIScreen.main.scale
+  #elseif canImport(AppKit)
+  public let scale = NSScreen.main?.backingScaleFactor ?? 1.0
+  #endif
 
   public enum VideoFlags: String {
     case waveform = "fl_waveform"
