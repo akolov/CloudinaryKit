@@ -80,7 +80,8 @@ public struct CloudinaryTransformation {
 
   // MARK: Properties
 
-  public static var host = "res.cloudinary.com"
+  public static var host = Self.defaultHost
+  private static let defaultHost = "res.cloudinary.com"
 
   public let cloudinaryID: String
   public let cloudinaryBucket: String?
@@ -94,7 +95,7 @@ extension CloudinaryTransformation {
 
   private var path: String {
     var path = [String]()
-    if let cloudinaryBucket = cloudinaryBucket {
+    if let cloudinaryBucket = cloudinaryBucket, Self.host != Self.defaultHost {
       path.append(cloudinaryBucket)
     }
 
