@@ -12,7 +12,7 @@ public struct CloudinaryTransformation {
 
   public init(
     cloudinaryID: String,
-    bucket: String,
+    bucket: String?,
     mediaType: CloudinaryMediaType,
     deliveryType: DeliveryType = .upload,
     kind: Kind? = nil
@@ -83,7 +83,7 @@ public struct CloudinaryTransformation {
   public static var host = "res.cloudinary.com"
 
   public let cloudinaryID: String
-  public let cloudinaryBucket: String
+  public let cloudinaryBucket: String?
   public let mediaType: CloudinaryMediaType
   public let deliveryType: DeliveryType
   public let transformationKind: Kind?
@@ -92,19 +92,28 @@ public struct CloudinaryTransformation {
 
 extension CloudinaryTransformation {
 
-  public var url: URL? {
-    let resourceType: String
-    switch mediaType {
-    case .image:
-      resourceType = "image"
-    case .video:
-      resourceType = "video"
+  private var path: String {
+    var path = [String]()
+    if let cloudinaryBucket = cloudinaryBucket {
+      path.append(cloudinaryBucket)
     }
 
+    switch mediaType {
+    case .image:
+      path.append("image")
+    case .video:
+      path.append("video")
+    }
+
+    path.append("upload")
+    return "/" + path.joined(separator: "/")
+  }
+
+  public var url: URL? {
     var components = URLComponents()
     components.scheme = "https"
     components.host = Self.host
-    components.path = "/\(cloudinaryBucket)/\(resourceType)/upload"
+    components.path = path
 
     var url = components.url
     if let transformationKind = transformationKind {
@@ -114,26 +123,18 @@ extension CloudinaryTransformation {
       case let .named(name):
         url = url?.appendingPathComponent("t_\(name.rawValue)")
       }
-
     }
+
     url = url?.appendingPathComponent(cloudinaryID)
 
     return url
   }
 
   public var rawURL: URL? {
-    let resourceType: String
-    switch mediaType {
-    case .image:
-      resourceType = "image"
-    case .video:
-      resourceType = "video"
-    }
-
     var components = URLComponents()
     components.scheme = "https"
     components.host = "res.cloudinary.com"
-    components.path = "/\(cloudinaryBucket)/\(resourceType)/upload/\(cloudinaryID)"
+    components.path = path + "/" + cloudinaryID
     return components.url
   }
 
