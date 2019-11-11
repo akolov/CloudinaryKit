@@ -80,6 +80,8 @@ public struct CloudinaryTransformation {
 
   // MARK: Properties
 
+  public static var host = "res.cloudinary.com"
+
   public let cloudinaryID: String
   public let cloudinaryBucket: String
   public let mediaType: CloudinaryMediaType
@@ -101,7 +103,7 @@ extension CloudinaryTransformation {
 
     var components = URLComponents()
     components.scheme = "https"
-    components.host = "res.cloudinary.com"
+    components.host = Self.host
     components.path = "/\(cloudinaryBucket)/\(resourceType)/upload"
 
     var url = components.url
