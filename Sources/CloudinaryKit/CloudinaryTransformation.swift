@@ -95,7 +95,7 @@ extension CloudinaryTransformation {
 
   private var path: String {
     var path = [String]()
-    if let cloudinaryBucket = cloudinaryBucket, Self.host != Self.defaultHost {
+    if let cloudinaryBucket = cloudinaryBucket, Self.host == Self.defaultHost {
       path.append(cloudinaryBucket)
     }
 
