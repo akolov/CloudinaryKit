@@ -80,8 +80,7 @@ public struct CloudinaryTransformation {
 
   // MARK: Properties
 
-  public static var host = Self.defaultHost
-  private static let defaultHost = "res.cloudinary.com"
+  public static var host: CloudinaryHost = .standard
 
   public let cloudinaryID: String
   public let cloudinaryBucket: String?
@@ -95,7 +94,7 @@ extension CloudinaryTransformation {
 
   private var path: String {
     var path = [String]()
-    if let cloudinaryBucket = cloudinaryBucket, Self.host == Self.defaultHost {
+    if let cloudinaryBucket = cloudinaryBucket, case .standard = Self.host {
       path.append(cloudinaryBucket)
     }
 
@@ -113,7 +112,7 @@ extension CloudinaryTransformation {
   public var url: URL? {
     var components = URLComponents()
     components.scheme = "https"
-    components.host = Self.host
+    components.host = Self.host.host
     components.path = path
 
     var url = components.url
@@ -134,7 +133,7 @@ extension CloudinaryTransformation {
   public var rawURL: URL? {
     var components = URLComponents()
     components.scheme = "https"
-    components.host = "res.cloudinary.com"
+    components.host = Self.host.host
     components.path = path + "/" + cloudinaryID
     return components.url
   }
