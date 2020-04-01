@@ -6,7 +6,9 @@
 //  Copyright © 2019 Alexander Kolov. All rights reserved.
 //
 
-public enum CloudinaryMediaType: String {
+import Foundation
+
+public enum CloudinaryMediaType: String, Codable {
 
   case image, video
 
