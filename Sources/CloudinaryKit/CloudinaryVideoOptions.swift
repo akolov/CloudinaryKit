@@ -96,6 +96,10 @@ extension CloudinaryVideoOptions {
       encodingParams.append("q_\(quality)")
     }
 
+    if scale != 1.0 {
+      encodingParams.append("dpr_\(scale)")
+    }
+
     if crop != .none {
       transParams.append("c_" + crop.rawValue)
     }
@@ -136,10 +140,6 @@ extension CloudinaryVideoOptions {
 
     if let aspectRatio = aspectRatio {
       transParams.append("ar_\(aspectRatio.rawValue)")
-    }
-
-    if scale != 1.0 {
-      transParams.append("dpr_\(scale)")
     }
 
     let params = [encodingParams, transParams]
