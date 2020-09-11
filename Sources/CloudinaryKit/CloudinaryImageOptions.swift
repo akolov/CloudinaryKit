@@ -50,7 +50,7 @@ extension CloudinaryImageOptions {
     trim: CloudinaryTransformation.VideoTrim? = nil,
     width: Double? = nil,
     height: Double? = nil,
-    aspectRatio: CloudinaryTransformation.AspectRatio,
+    aspectRatio: CloudinaryTransformation.AspectRatio? = nil,
     layers: [CloudinaryLayer] = []
   ) {
     self.imageFormat = imageFormat

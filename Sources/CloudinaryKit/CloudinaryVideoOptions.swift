@@ -53,7 +53,7 @@ extension CloudinaryVideoOptions {
     trim: CloudinaryTransformation.VideoTrim? = nil,
     width: Double? = nil,
     height: Double? = nil,
-    aspectRatio: CloudinaryTransformation.AspectRatio
+    aspectRatio: CloudinaryTransformation.AspectRatio? = nil
   ) {
     self.audioCodec = audioCodec
     self.videoCodec = videoCodec
