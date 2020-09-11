@@ -25,6 +25,7 @@ public struct CloudinaryVideoOptions: CloudinaryTransformationOptions {
   public let trim: CloudinaryTransformation.VideoTrim?
   public let height: Double?
   public let width: Double?
+  public let aspectRatio: CloudinaryTransformation.AspectRatio?
 
   #if canImport(UIKit)
   public let scale = UIScreen.main.scale
@@ -51,7 +52,8 @@ extension CloudinaryVideoOptions {
     quality: Int? = nil,
     trim: CloudinaryTransformation.VideoTrim? = nil,
     width: Double? = nil,
-    height: Double? = nil
+    height: Double? = nil,
+    aspectRatio: CloudinaryTransformation.AspectRatio
   ) {
     self.audioCodec = audioCodec
     self.videoCodec = videoCodec
@@ -64,6 +66,7 @@ extension CloudinaryVideoOptions {
     self.trim = trim
     self.width = width
     self.height = height
+    self.aspectRatio = aspectRatio
   }
 
   public func serialized() -> String {
@@ -129,6 +132,10 @@ extension CloudinaryVideoOptions {
 
     if let width = width {
       transParams.append("w_\(Int(width))")
+    }
+
+    if let aspectRatio = aspectRatio {
+      transParams.append("ar_\(aspectRatio.rawValue)")
     }
 
     if scale != 1.0 {

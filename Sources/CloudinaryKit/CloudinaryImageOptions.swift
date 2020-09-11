@@ -22,6 +22,7 @@ public struct CloudinaryImageOptions: CloudinaryTransformationOptions {
   public let quality: CloudinaryTransformation.Quality?
   public let height: Double?
   public let width: Double?
+  public let aspectRatio: CloudinaryTransformation.AspectRatio?
   public let trim: CloudinaryTransformation.VideoTrim?
   public let layers: [CloudinaryLayer]
 
@@ -49,6 +50,7 @@ extension CloudinaryImageOptions {
     trim: CloudinaryTransformation.VideoTrim? = nil,
     width: Double? = nil,
     height: Double? = nil,
+    aspectRatio: CloudinaryTransformation.AspectRatio,
     layers: [CloudinaryLayer] = []
   ) {
     self.imageFormat = imageFormat
@@ -61,6 +63,7 @@ extension CloudinaryImageOptions {
     self.width = width
     self.height = height
     self.layers = layers
+    self.aspectRatio = aspectRatio
   }
 
   public func serialized() -> String {
@@ -110,6 +113,10 @@ extension CloudinaryImageOptions {
 
     if let width = width {
       params.append("w_\(Int(width))")
+    }
+
+    if let aspectRatio = aspectRatio {
+      params.append("ar_\(aspectRatio.rawValue)")
     }
 
     if scale != 1.0 {

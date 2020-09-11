@@ -26,6 +26,11 @@ public struct CloudinaryTransformation {
 
   // MARK: Subtypes
 
+  public enum AspectRatio {
+    case ratio(Int, Int)
+    case decimal(Decimal)
+  }
+
   public enum Crop: String {
     case none, crop, scale, limit, thumb
     case fit, minimumFit = "mfit"
@@ -137,6 +142,21 @@ extension CloudinaryTransformation {
     components.host = Self.host.host
     components.path = path + "/" + cloudinaryID
     return components.url
+  }
+
+}
+
+// MARK: CloudinaryTransformation.AspectRatio
+
+extension CloudinaryTransformation.AspectRatio {
+
+  var rawValue: String {
+    switch self {
+    case let .ratio(w, h):
+      return "\(w):\(h)"
+    case let .decimal(v):
+      return "\(v)"
+    }
   }
 
 }
