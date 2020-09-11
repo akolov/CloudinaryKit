@@ -43,7 +43,7 @@ public struct CloudinaryTransformation {
   }
 
   public enum Gravity {
-    case auto(String), north, west, south, east, center
+    case auto(String?), north, west, south, east, center
     case northEast, northWest, southWest, southEast
     case face
   }
@@ -167,8 +167,8 @@ extension CloudinaryTransformation.Gravity {
 
   var rawValue: String {
     switch self {
-    case .auto(let string):
-      return "auto:\(string)"
+    case let .auto(string):
+      return string.map { "auto:\($0)" } ?? "auto"
     case .center:
       return "center"
     case .north:
