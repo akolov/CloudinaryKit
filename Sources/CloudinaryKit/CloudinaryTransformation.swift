@@ -40,6 +40,7 @@ public struct CloudinaryTransformation {
   public enum Gravity {
     case auto(String), north, west, south, east, center
     case northEast, northWest, southWest, southEast
+    case face
   }
 
   public enum Quality {
@@ -166,6 +167,8 @@ extension CloudinaryTransformation.Gravity {
       return "south_west"
     case .southEast:
       return "south_east"
+    case .face:
+      return "face"
     }
   }
 
