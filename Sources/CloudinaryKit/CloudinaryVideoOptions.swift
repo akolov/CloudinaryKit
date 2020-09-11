@@ -67,74 +67,79 @@ extension CloudinaryVideoOptions {
   }
 
   public func serialized() -> String {
-    var params = [String]()
+    var encodingParams = [String]()
+    var transParams = [String]()
 
-    params.append("f_mp4")
+    encodingParams.append("f_mp4")
 
     if audioCodec != .passthrough {
-      params.append("ac_" + audioCodec.rawValue)
+      encodingParams.append("ac_" + audioCodec.rawValue)
     }
 
     if videoCodec != .auto {
-      params.append("vc_" + videoCodec.rawValue)
-    }
-
-    if crop != .none {
-      params.append("c_" + crop.rawValue)
-    }
-
-    if let effect = effect {
-      params.append("e_" + effect)
-    }
-
-    if !flags.isEmpty {
-      params.append(flags.map { $0.rawValue }.joined(separator: "."))
+      encodingParams.append("vc_" + videoCodec.rawValue)
     }
 
     if let framerate = framerate {
       if framerate.lowerBound == framerate.upperBound {
-        params.append("fps_\(framerate.lowerBound)")
+        encodingParams.append("fps_\(framerate.lowerBound)")
       }
       else {
-        params.append("fps_\(framerate.lowerBound)-\(framerate.upperBound)")
+        encodingParams.append("fps_\(framerate.lowerBound)-\(framerate.upperBound)")
       }
-    }
-
-    if gravity != .center {
-      params.append("g_" + gravity.rawValue)
     }
 
     if let quality = quality {
-      params.append("q_\(quality)")
+      encodingParams.append("q_\(quality)")
+    }
+
+    if crop != .none {
+      transParams.append("c_" + crop.rawValue)
+    }
+
+    if let effect = effect {
+      transParams.append("e_" + effect)
+    }
+
+    if !flags.isEmpty {
+      transParams.append(flags.map { $0.rawValue }.joined(separator: "."))
+    }
+
+    if gravity != .center {
+      transParams.append("g_" + gravity.rawValue)
     }
 
     if let trim = trim {
       if let start = trim.start {
-        params.append("so_\(start)")
+        transParams.append("so_\(start)")
       }
 
       if let end = trim.end {
-        params.append("eo_\(end)")
+        transParams.append("eo_\(end)")
       }
 
       if let duration = trim.duration {
-        params.append("du_\(duration)")
+        transParams.append("du_\(duration)")
       }
     }
 
     if let height = height {
-      params.append("h_\(Int(height))")
+      transParams.append("h_\(Int(height))")
     }
 
     if let width = width {
-      params.append("w_\(Int(width))")
+      transParams.append("w_\(Int(width))")
     }
 
     if scale != 1.0 {
-      params.append("dpr_\(scale)")
+      transParams.append("dpr_\(scale)")
     }
 
-    return params.joined(separator: ",")
+    let params = [encodingParams, transParams]
+    return params
+      .map { $0.joined(separator: ",") }
+      .filter { !$0.isEmpty }
+      .joined(separator: "/")
   }
 
   public static let defaultVideoCodec: CloudinaryTransformation.VideoCodec = {
