@@ -16,7 +16,7 @@ public struct CloudinaryTransformation {
     mediaType: CloudinaryMediaType,
     deliveryType: DeliveryType = .upload,
     kind: Kind? = nil,
-    format: Format
+    format: Format?
   ) {
     self.cloudinaryID = cloudinaryID
     self.cloudinaryBucket = bucket
@@ -107,7 +107,7 @@ public struct CloudinaryTransformation {
   public let mediaType: CloudinaryMediaType
   public let deliveryType: DeliveryType
   public let transformationKind: Kind?
-  public let format: Format
+  public let format: Format?
 
 }
 
@@ -153,6 +153,8 @@ extension CloudinaryTransformation {
       url = url?.appendingPathExtension(imageFormat.rawValue)
     case let .video(videoFormat):
       url = url?.appendingPathExtension(videoFormat.rawValue)
+    case .none:
+      break
     }
 
     return url
