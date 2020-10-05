@@ -26,9 +26,9 @@ public struct CloudinaryTransformation {
     self.format = format ?? {
       switch mediaType {
       case .image:
-        return .image(ImageFormat.default)
+        return .image(.default)
       case .video:
-        return .video(VideoFormat.default)
+        return .video(.default)
       }
     }()
   }
