@@ -15,13 +15,15 @@ public struct CloudinaryTransformation {
     bucket: String?,
     mediaType: CloudinaryMediaType,
     deliveryType: DeliveryType = .upload,
-    kind: Kind? = nil
+    kind: Kind? = nil,
+    format: Format
   ) {
     self.cloudinaryID = cloudinaryID
     self.cloudinaryBucket = bucket
     self.mediaType = mediaType
     self.deliveryType = deliveryType
     self.transformationKind = kind
+    self.format = format
   }
 
   // MARK: Subtypes
@@ -54,6 +56,9 @@ public struct CloudinaryTransformation {
 
   public enum ImageFormat: String {
     case auto, heic, jpeg = "jpg", pdf, png, webp
+    public static var `default`: ImageFormat {
+      return .heic
+    }
   }
 
   public enum AudioCodec: String {
@@ -64,10 +69,19 @@ public struct CloudinaryTransformation {
     case auto, h264, h265
   }
 
+  public enum VideoFormat: String {
+    case m4v, mkv
+  }
+
   public struct VideoTrim {
     public let start: TimeInterval?
     public let end: TimeInterval?
     public let duration: TimeInterval?
+  }
+
+  public enum Format {
+    case image(ImageFormat)
+    case video(VideoFormat)
   }
 
   public enum Kind {
@@ -93,12 +107,13 @@ public struct CloudinaryTransformation {
   public let mediaType: CloudinaryMediaType
   public let deliveryType: DeliveryType
   public let transformationKind: Kind?
+  public let format: Format
 
 }
 
 extension CloudinaryTransformation {
 
-  private var path: String {
+  private var pathPrefix: String {
     var path = [String]()
     if let cloudinaryBucket = cloudinaryBucket, case .standard = Self.host {
       path.append(cloudinaryBucket)
@@ -119,7 +134,7 @@ extension CloudinaryTransformation {
     var components = URLComponents()
     components.scheme = "https"
     components.host = Self.host.host
-    components.path = path
+    components.path = pathPrefix
 
     var url = components.url
     if let transformationKind = transformationKind {
@@ -133,6 +148,13 @@ extension CloudinaryTransformation {
 
     url = url?.appendingPathComponent(cloudinaryID)
 
+    switch format {
+    case let .image(imageFormat):
+      url = url?.appendingPathExtension(imageFormat.rawValue)
+    case let .video(videoFormat):
+      url = url?.appendingPathExtension(videoFormat.rawValue)
+    }
+
     return url
   }
 
@@ -140,7 +162,7 @@ extension CloudinaryTransformation {
     var components = URLComponents()
     components.scheme = "https"
     components.host = Self.host.host
-    components.path = path + "/" + cloudinaryID
+    components.path = pathPrefix + "/" + cloudinaryID
     return components.url
   }
 

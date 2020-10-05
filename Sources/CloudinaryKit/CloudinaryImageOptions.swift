@@ -41,7 +41,7 @@ public struct CloudinaryImageOptions: CloudinaryTransformationOptions {
 extension CloudinaryImageOptions {
 
   public init(
-    imageFormat: CloudinaryTransformation.ImageFormat = CloudinaryImageOptions.defaultImageFormat,
+    imageFormat: CloudinaryTransformation.ImageFormat = .default,
     crop: CloudinaryTransformation.Crop = .none,
     effect: String? = nil,
     flags: [CloudinaryImageOptions.ImageFlags] = [],
@@ -68,10 +68,6 @@ extension CloudinaryImageOptions {
 
   public func serialized() -> String {
     var params = [String]()
-
-    if imageFormat != .auto {
-      params.append("f_" + imageFormat.rawValue)
-    }
 
     if crop != .none {
       params.append("c_" + crop.rawValue)
@@ -128,7 +124,5 @@ extension CloudinaryImageOptions {
       layers.map { $0.serialized() }.joined(separator: "/")
     ].joined(separator: "/")
   }
-
-  public static let defaultImageFormat: CloudinaryTransformation.ImageFormat = .jpeg
 
 }
