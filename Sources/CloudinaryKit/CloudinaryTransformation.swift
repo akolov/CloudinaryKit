@@ -23,7 +23,14 @@ public struct CloudinaryTransformation {
     self.mediaType = mediaType
     self.deliveryType = deliveryType
     self.transformationKind = kind
-    self.format = format
+    self.format = format ?? {
+      switch mediaType {
+      case .image:
+        return .image(ImageFormat.default)
+      case .video:
+        return .video(VideoFormat.default)
+      }
+    }()
   }
 
   // MARK: Subtypes
@@ -71,6 +78,9 @@ public struct CloudinaryTransformation {
 
   public enum VideoFormat: String {
     case m4v, mkv
+    public static var `default`: VideoFormat {
+      return .m4v
+    }
   }
 
   public struct VideoTrim {
@@ -107,7 +117,7 @@ public struct CloudinaryTransformation {
   public let mediaType: CloudinaryMediaType
   public let deliveryType: DeliveryType
   public let transformationKind: Kind?
-  public let format: Format?
+  public let format: Format
 
 }
 
@@ -153,8 +163,6 @@ extension CloudinaryTransformation {
       url = url?.appendingPathExtension(imageFormat.rawValue)
     case let .video(videoFormat):
       url = url?.appendingPathExtension(videoFormat.rawValue)
-    case .none:
-      break
     }
 
     return url
