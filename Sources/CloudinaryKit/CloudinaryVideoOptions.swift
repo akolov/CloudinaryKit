@@ -73,8 +73,6 @@ extension CloudinaryVideoOptions {
     var encodingParams = [String]()
     var transParams = [String]()
 
-    encodingParams.append("f_mp4")
-
     if audioCodec != .passthrough {
       encodingParams.append("ac_" + audioCodec.rawValue)
     }
