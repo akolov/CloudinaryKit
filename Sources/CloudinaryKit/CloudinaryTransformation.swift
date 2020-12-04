@@ -77,7 +77,7 @@ public struct CloudinaryTransformation {
   }
 
   public enum VideoFormat: String {
-    case m4v, mkv
+    case m4v, mkv, m3u8
     public static var `default`: VideoFormat {
       return .m4v
     }
